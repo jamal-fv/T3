@@ -9,9 +9,7 @@ import {
 import { TRPCError } from "@trpc/server";
 
 // Add OpenAI client initialization
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+
 
 export const postRouter = createTRPCRouter({
 

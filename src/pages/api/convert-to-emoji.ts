@@ -40,7 +40,7 @@ export default async function handler(
         }
       ],
       model: "gpt-3.5-turbo",
-    });
+    }) as OpenAI.Chat.Completions.ChatCompletion;
 
     const emojiResult = completion.choices[0]?.message?.content || "";
 

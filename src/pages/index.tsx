@@ -16,8 +16,7 @@ import {
 } from '@mui/material';
 
 export default function Home() {
-  const router = useRouter();
-  const { data: sessionData, status } = useSession();
+  const { data: sessionData } = useSession();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -70,7 +69,8 @@ export default function Home() {
         content: input,
          // Store the original input text
       });
-    } catch (err) {
+    } catch (error: unknown) {
+      console.error(error);
       setError('Failed to convert and post');
     } finally {
       setLoading(false);
