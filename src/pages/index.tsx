@@ -1,8 +1,7 @@
 import { useSession, signOut, signIn } from "next-auth/react";
 import Head from "next/head";
-import { useState } from "react";
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react";
 import { api } from "@/utils/api";
-import { useRouter } from "next/router";
 import { 
   Box,
   Typography,
@@ -42,6 +41,11 @@ export default function Home() {
     }
   });
 
+  // Add type for API response
+  interface ConvertResponse {
+    result: string;
+  }
+
   const handleSubmit = async () => {
     if (!sessionData) {
       setError('Please login to convert and post');
@@ -62,16 +66,15 @@ export default function Home() {
       
       if (!response.ok) throw new Error('Conversion failed');
       
-      const data = await response.json();
+      const data = (await response.json()) as ConvertResponse;
       
       await createPost.mutateAsync({
         name: data.result,
         content: input,
-         // Store the original input text
       });
     } catch (error: unknown) {
-      console.error(error);
       setError('Failed to convert and post');
+      console.error('Error:', error); // Log the error instead of ignoring it
     } finally {
       setLoading(false);
     }
@@ -205,7 +208,7 @@ export default function Home() {
                       variant="outlined"
                       color="error"
                       size="small"
-                      onClick={() => void deletePost.mutate({ id: post.id })}
+                      onClick={() => void deletePost.mutate({ id: Number(post.id) })}
                       sx={{ ml: 2 }}
                     >
                       Delete

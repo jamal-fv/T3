@@ -7,6 +7,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Add interface for request body
+interface ConvertRequest {
+  text: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -22,7 +27,7 @@ export default async function handler(
   }
 
   try {
-    const { text } = req.body;
+    const { text } = req.body as ConvertRequest;
 
     if (!text) {
       return res.status(400).json({ error: "Text is required" });
@@ -40,9 +45,9 @@ export default async function handler(
         }
       ],
       model: "gpt-3.5-turbo",
-    }) as OpenAI.Chat.Completions.ChatCompletion;
+    });
 
-    const emojiResult = completion.choices[0]?.message?.content || "";
+    const emojiResult = completion.choices[0]?.message?.content ?? "";
 
     return res.status(200).json({ 
       result: `${emojiResult}` 
