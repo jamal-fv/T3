@@ -17,13 +17,13 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+    id           Int      @id @default(autoincrement())
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    name         String   // This will store the emoji result
+    content      String   // Original text (renamed from originalText to match
+    createdBy    User     @relation(fields: [createdById], references: [id])
+    createdById  String
 
     @@index([name])
 }
@@ -64,7 +64,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    posts         Post[]    // Add this line to establish the relation
 }
 
 model VerificationToken {
